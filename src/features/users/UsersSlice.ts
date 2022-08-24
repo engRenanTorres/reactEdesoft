@@ -3,7 +3,7 @@ import type { User } from '../../types/User';
 
 interface InitialState {
   users:Array<User>,
-  status?:string
+  status:string
 }
 
 export const getUsers = createAsyncThunk(
@@ -14,7 +14,7 @@ export const getUsers = createAsyncThunk(
  }
 )
 
-const initialState:InitialState = {users : []};           
+const initialState:InitialState = {users : [], status:''};           
 
 export const userSlice = createSlice({
   name: 'usersAPI',

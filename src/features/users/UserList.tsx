@@ -3,13 +3,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Button from "../../components/Button";
 import { deleteUser } from './UsersSlice';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { getUsers } from './UsersSlice';
+import SectionLoading from '../../components/SectionLoading';
 
 function UserList () {  
   const dispatch = useDispatch<AppDispatch>();
-  const users = useSelector((store: RootState) => store.users);
-  const usersAPI2 = useSelector((store: RootState) => store.usersAPI);
+  const usersAPI = useSelector((store: RootState) => store.usersAPI);
+  const [isLoadingUsers, setIsLoadingUsers] = useState(true);
+  let status = "loading";
 
   const nameFormatter = (string:string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -18,14 +20,17 @@ function UserList () {
   
   const hadleRemoveUser = (id:string) => {
     dispatch(deleteUser({id: id}));
+    
   }
   useEffect(()=>{
     dispatch(getUsers());
-  },[dispatch])
+    status = usersAPI.status;
+    setIsLoadingUsers(false)
+  },[dispatch,status])
 
   
   
-  const renderCard = () => usersAPI2.users.map( user => (
+  const renderCard = () => usersAPI.users.map( user => (
     <div 
       className="bg-gray-300 p-5 flex items-center justify-between"
       key={user.id}>
@@ -54,9 +59,11 @@ function UserList () {
 
   return (
     <>
+      
       <Link to="/add-user"><Button onClick={()=>{}}>Adiciona Usuário</Button></Link>
+      {usersAPI.status === "loading" && <SectionLoading />}
       <div className="grid gap-5 md:grid-cols-2">
-        {users.length ? renderCard() : <p className="text-center col-span-2 text-gray-700 font-semibold">Usuários não encontrados</p>}
+        {usersAPI.users.length ? renderCard() : <p className="text-center col-span-2 text-gray-700 font-semibold">Usuários não encontrados</p>}
       </div>
     </>
   )

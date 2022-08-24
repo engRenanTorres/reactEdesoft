@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
 import TextField from "../../components/TextField";
 import { User } from "../../types/User";
-import { addUser } from "./UserSlice";
+import { addUser } from "./UsersSlice";
 import { v4 as uuid } from 'uuid';
 
 
@@ -12,13 +12,13 @@ const AddUser = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [values, setValues] = useState<User>({
-    name:'',
+    name:{firstname:'', lastname:''},
     email:''
   });
 
   const handleAddUser = () => {
     setValues({
-      name:'',
+      name:{firstname:'', lastname:''},
       email:''
     })
     dispatch(addUser({
@@ -33,14 +33,28 @@ const AddUser = () => {
     <div className="mt-10 max-w-xl mx-auto">
       <TextField
         label="Nome"
-        inputProps={{type: "text", placeholder: "Seu nome"}}
-        value={values.name}
+        inputProps={{type: "text", placeholder: "Seu primeiro nome"}}
+        value={values.name.firstname}
         onChange={
           (event: React.FormEvent<HTMLInputElement>)=>
             setValues(
               {
                 ...values, 
-                name: event.currentTarget.value
+                name: {firstname:event.currentTarget.value, lastname:values.name.lastname} 
+              }
+          )}
+      />
+      <br/>
+      <TextField
+        label="Sobrenome"
+        inputProps={{type: "text", placeholder: "Seu sobrenome"}}
+        value={values.name.lastname}
+        onChange={
+          (event: React.FormEvent<HTMLInputElement>)=>
+            setValues(
+              {
+                ...values, 
+                name: {firstname: values.name.firstname, lastname: event.currentTarget.value} 
               }
           )}
       />

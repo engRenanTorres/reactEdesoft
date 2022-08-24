@@ -1,10 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { User } from '../../types/User';
 
+const usersAPI: Array<User> = [];
+fetch('https://fakestoreapi.com/users')
+            .then(res=>res.json())
+            .then(json=>{/*console.log(json)*/})
+            
+
 const initialState: Array<User> = [
-  { id: '1', name: 'Amanda', email: 'amanda@mail.com'},
-  { id: '2', name: 'Renan', email: 'renan@mail.com'},
-  { id: '3', name: 'Alberto', email: 'alberto@mail.com'}
+  { id: '1', name: {firstname:'Amanda', lastname:"Alfreda"}, email: 'amanda@mail.com'},
+  { id: '2', name: {firstname:'Renan', lastname:"Alfreda"}, email: 'renan@mail.com'},
+  { id: '3', name: {firstname:'Alecrim', lastname:"Alfreda"}, email: 'alberto@mail.com'}
 ];
 
 export const userSlice = createSlice({

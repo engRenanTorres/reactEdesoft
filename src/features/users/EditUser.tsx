@@ -5,23 +5,28 @@ import Button from "../../components/Button";
 import TextField from "../../components/TextField";
 import { User } from "../../types/User";
 import type { RootState } from '../../app/store';
-import { editUser } from "./UserSlice";
+import { editUser } from "./UsersSlice";
 
 const EditUser = () => {
   const params = useParams();
   const dispatch = useDispatch();
-  const users = useSelector((store: RootState) => store.users)
+  const users = useSelector((store: RootState) => store.usersAPI)
   const navigate = useNavigate();
-  const existingUser = users.filter((user:User) => user.id === params.id);
+  const existingUser = users.users.filter((user:User) => String(user.id) === params.id);
+  console.log('user.id' + typeof(users.users[0].id));
+  console.log('user.id' + typeof(params.id));
   const {name, email} = existingUser[0];
   const [values, setValues] = useState<User>({
-    name,
+    name: {
+      firstname: name.firstname,
+      lastname: name.lastname
+    },
     email
   });
 
   const handleEditUser = () => {
     setValues({
-      name:'',
+      name:{firstname:'',lastname:''},
       email:''
     })
     dispatch(editUser({
@@ -35,15 +40,29 @@ const EditUser = () => {
   return (
     <div className="mt-10 max-w-xl mx-auto">
       <TextField
-        label="Nome"
-        inputProps={{type: "text", placeholder: "Seu nome"}}
-        value={values.name}
+        label="Primeiro Nome"
+        inputProps={{type: "text", placeholder: "Seu primeiro nome"}}
+        value={values.name.firstname}
         onChange={
           (event: React.FormEvent<HTMLInputElement>)=>
             setValues(
               {
                 ...values, 
-                name: event.currentTarget.value
+                name: {firstname: event.currentTarget.value, lastname: values.name.lastname}
+              }
+          )}
+      />
+      <br/>
+      <TextField
+        label="Sobrenome"
+        inputProps={{type: "text", placeholder: "Seu sobrenome"}}
+        value={values.name.lastname}
+        onChange={
+          (event: React.FormEvent<HTMLInputElement>)=>
+            setValues(
+              {
+                ...values, 
+                name: {firstname: values.name.firstname, lastname: event.currentTarget.value} 
               }
           )}
       />

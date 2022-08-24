@@ -3,18 +3,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Button from "../../components/Button";
 import { deleteUser } from './UsersSlice';
-import { useEffect, useState } from 'react';
-import type { User } from '../../types/User';
+import { useEffect } from 'react';
 import { getUsers } from './UsersSlice';
 
-function UserList () {
-  const [usersAPI,setUsersAPU] = useState<Array<User>>([]);
-
-  
+function UserList () {  
   const dispatch = useDispatch<AppDispatch>();
   const users = useSelector((store: RootState) => store.users);
   const usersAPI2 = useSelector((store: RootState) => store.usersAPI);
 
+  const nameFormatter = (string:string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
 
   
   const hadleRemoveUser = (id:string) => {
@@ -31,7 +30,7 @@ function UserList () {
       className="bg-gray-300 p-5 flex items-center justify-between"
       key={user.id}>
       <div>
-        <h3 className="font-bold text-lg text-gray-700">{user.name.firstname}</h3>
+        <h3 className="font-bold text-lg text-gray-700">{nameFormatter(user.name.firstname)} {nameFormatter(user.name.lastname)}</h3>
         <span className="font-normal text-gray-600">{user.email}</span>
       </div>
       <div className="flex gap-4">

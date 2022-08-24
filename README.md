@@ -1,3 +1,14 @@
+
+#Projeto criado para a Edesoft
+
+## O projeto utiliza as seguintes tecnologias 
+
+- [x] React.js com typescript
+- [x] Persistência com Redux
+- [x] Consumo de API 
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
